@@ -1,0 +1,2 @@
+# networksecurity/exception/__init__.py
+from networksecurity.exception.exception import NetworkSecurityException
