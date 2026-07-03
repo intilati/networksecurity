@@ -3,3 +3,7 @@ venv
 logs
 
 test_mongodb.py 
+
+# Python
+__pycache__/
+*.py[cod]
