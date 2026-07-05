@@ -1,6 +1,10 @@
 
 logs
 
+# Artifacts
+Artifact/
+artifacts/
+
 test_mongodb.py 
 
 # Bytecode
