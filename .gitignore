@@ -14,6 +14,7 @@ __pycache__/
 # Virtual environments
 venv/
 .venv/
+./venvco
 
 # Environment variables
 .env
@@ -26,6 +27,11 @@ venv/
 build/
 dist/
 *.egg-info/
+
+# MLflow
+mlflow.db
+mlruns/
+
 
 # IDEs
 .vscode/
