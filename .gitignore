@@ -1,6 +1,8 @@
 
 logs
 
+
+
 # Artifacts
 Artifact/
 artifacts/
@@ -40,3 +42,4 @@ mlruns/
 # OS files
 .DS_Store
 Thumbs.db
+
