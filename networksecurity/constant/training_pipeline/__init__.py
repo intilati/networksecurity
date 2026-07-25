@@ -20,7 +20,7 @@ SCHEMA_FILE_PATH =os.path.join("data_schema","schema.yaml")
 SAVED_MODEL_DIR= os.path.join("data_schema","schema.yaml")
 MODEL_FILE_NAME="model.pkl"
 
-'''data Ingestion related constants start with DATA_INGESTION VAR NAME
+'''data Ingestion related constants 
 '''
 
 DATA_INGESTION_COLLECTION_NAME: str  = "NetworkData"
@@ -45,7 +45,7 @@ PREPROCESSING_OBJECT_FILE_NAME="preprocessing.pkl"
 
 
 """
-Data Transformation related constant start with DATA_TRANSFORMATION VAR NAME
+Data Transformation related constant 
 """
 DATA_TRANSFORMATION_DIR_NAME: str = "data_transformation"
 DATA_TRANSFORMATION_TRANSFORMED_DATA_DIR: str = "transformed"
@@ -63,7 +63,7 @@ DATA_TRANSFORMATION_TEST_FILE_PATH: str = "test.npy"
 
 
 """
-Model Trainer ralated constant start with MODE TRAINER VAR NAME
+Model Trainer ralated constant 
 """
 
 MODEL_TRAINER_DIR_NAME: str = "model_trainer"
@@ -72,6 +72,6 @@ MODEL_TRAINER_TRAINED_MODEL_NAME: str = "model.pkl"
 MODEL_TRAINER_EXPECTED_SCORE: float = 0.6
 MODEL_TRAINER_OVER_FIITING_UNDER_FITTING_THRESHOLD: float = 0.05
 
-TRAINING_BUCKET_NAME = "netwworksecurity"
+TRAINING_BUCKET_NAME = "networksecurity-256553071008-us-east-1-an"
 
  
