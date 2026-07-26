@@ -27,8 +27,6 @@ import mlflow
 from urllib.parse import urlparse
 
 import dagshub
-dagshub.init(repo_owner='intilati', repo_name='networksecurity', mlflow=True)
-
 
 
 
@@ -56,6 +54,10 @@ class ModelTrainer:
 
         
     def train_model(self,X_train,y_train,x_test,y_test):
+
+        dagshub.init(repo_owner='intilati', repo_name='networksecurity', mlflow=True)
+
+        
         models = {
                 "Random Forest": RandomForestClassifier(verbose=1),
                 "Decision Tree": DecisionTreeClassifier(),
