@@ -38,7 +38,7 @@ flowchart TD
 | Data ingestion | Reads records from MongoDB and creates training and test datasets | Ingestion artifacts |
 | Data validation | Checks the dataset columns against the YAML schema and compares train/test feature distributions using the KS two-sample test | Validation status and YAML drift report |
 | Data transformation | Fits a KNN imputer on training features and applies the fitted transformer to train and test features | Transformed arrays and saved preprocessor |
-| Model training | Searches hyperparameters with cross-validation, fits candidate classifiers, and selects a model using the configured classification scoring metric | Trained model and classification metrics |
+| Model training | Searches hyperparameters with 3-fold cross-validation and selects the candidate with the highest mean F1-score on the training split | Trained model and classification metrics |
 | Experiment tracking | Logs F1-score, precision, recall, and model artifacts | MLflow/DagsHub runs |
 | Inference | Loads the saved model and preprocessor, transforms uploaded CSV rows, and returns predictions | Prediction table and `prediction_output/output.csv` |
 
@@ -195,7 +195,9 @@ The Dockerfile installs the dependencies and launches the FastAPI application wi
 
 The model-training component initializes the DagsHub repository for MLflow tracking and logs F1-score, precision, recall, and model artifacts. The orchestrated training pipeline contains AWS S3 synchronization for pipeline artifacts and saved models.
 
-S3 synchronization requires AWS CLI credentials and access to the bucket configured in the project. Review the GitHub Actions workflow definitions and configure the necessary repository secrets before relying on automated image publishing.\n\n**Current workflow note:** `.github/workflows/main.yml` runs on pushes to `main` (except README-only changes). Its lint and unit-test steps are currently placeholders that print messages; they do not execute a real linter or test suite. ECR publishing requires repository secrets, and the deployment job uses a self-hosted runner.
+S3 synchronization requires AWS CLI credentials and access to the bucket configured in the project. Review the GitHub Actions workflow definitions and configure the necessary repository secrets before relying on automated image publishing.
+
+**Current workflow note:** `.github/workflows/main.yml` runs on pushes to `main` (except README-only changes). Its lint and unit-test steps are currently placeholders that print messages; they do not execute a real linter or test suite. ECR publishing requires repository secrets, and the deployment job uses a self-hosted runner.
 
 ## Reproducibility and scope notes
 
