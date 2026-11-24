@@ -197,7 +197,7 @@ The model-training component initializes the DagsHub repository for MLflow track
 
 S3 synchronization requires AWS CLI credentials and access to the bucket configured in the project. Review the GitHub Actions workflow definitions and configure the necessary repository secrets before relying on automated image publishing.
 
-**Current workflow note:** `.github/workflows/main.yml` runs on pushes to `main` (except README-only changes). Its lint and unit-test steps are currently placeholders that print messages; they do not execute a real linter or test suite. ECR publishing requires repository secrets, and the deployment job uses a self-hosted runner.
+**Current workflow:** `.github/workflows/main.yml` runs on pushes to `main` (except README-only changes). It compiles the Python sources, builds and pushes the Docker image to Amazon ECR, then runs a temporary container smoke test on a GitHub-hosted `ubuntu-latest` runner by checking the FastAPI `/docs` endpoint. The smoke-test container is removed when the job ends; this workflow validates the image but does not provide persistent application hosting. ECR publishing and the smoke test require the configured AWS repository secrets.
 
 ## Reproducibility and scope notes
 
