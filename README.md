@@ -195,7 +195,7 @@ The Dockerfile installs the dependencies and launches the FastAPI application wi
 
 The model-training component initializes the DagsHub repository for MLflow tracking and logs F1-score, precision, recall, and model artifacts. The orchestrated training pipeline contains AWS S3 synchronization for pipeline artifacts and saved models.
 
-S3 synchronization requires AWS CLI credentials and access to the bucket configured in the project. Review the GitHub Actions workflow definitions and configure the necessary repository secrets before relying on automated image publishing.
+S3 synchronization requires AWS CLI credentials and access to the bucket configured in the project. Review the GitHub Actions workflow definitions and configure the necessary repository secrets before relying on automated image publishing.\n\n**Current workflow note:** `.github/workflows/main.yml` runs on pushes to `main` (except README-only changes). Its lint and unit-test steps are currently placeholders that print messages; they do not execute a real linter or test suite. ECR publishing requires repository secrets, and the deployment job uses a self-hosted runner.
 
 ## Reproducibility and scope notes
 
@@ -207,7 +207,7 @@ S3 synchronization requires AWS CLI credentials and access to the bucket configu
 
 ## License
 
-See [LICENSE](LICENSE) if a license file is present in the repository.
+This project is licensed under the MIT License; see [LICENSE](LICENSE).
 
 ## Author
 
