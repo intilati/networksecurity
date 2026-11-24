@@ -15,8 +15,6 @@ from networksecurity.utils.main_utils.utils import load_numpy_array_data,evaluat
 from networksecurity.utils.ml_utils.metric.classification_metric import get_classification_score
 
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import r2_score
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import (
     AdaBoostClassifier,
@@ -24,7 +22,6 @@ from sklearn.ensemble import (
     RandomForestClassifier,
 )
 import mlflow
-from urllib.parse import urlparse
 
 import dagshub
 
@@ -87,8 +84,12 @@ class ModelTrainer:
             }
             
         }
-        model_report:dict=evaluate_models(X_train=X_train,y_train=y_train,X_test=x_test,y_test=y_test,
-                                          models=models,param=params)
+        model_report: dict = evaluate_models(
+            X_train=X_train,
+            y_train=y_train,
+            models=models,
+            param=params,
+        )
         
         ## To get best model score from dict
         best_model_score = max(sorted(model_report.values()))
