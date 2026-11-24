@@ -5,7 +5,6 @@ import os,sys
 import numpy as np
 import pickle
 
-from sklearn.metrics import f1_score
 from sklearn.model_selection import GridSearchCV
 
 
@@ -80,7 +79,8 @@ def load_numpy_array_data(file_path: str) -> np.array:
 
 def evaluate_models(X_train, y_train, X_test, y_test, models, param):
     """
-    Tune candidate classifiers with cross-validation and return their test F1 scores.
+    Tune candidate classifiers with cross-validation and return mean CV F1 scores.
+    The held-out test set is deliberately not used for model selection.
     """
     try:
         report = {}
@@ -93,14 +93,13 @@ def evaluate_models(X_train, y_train, X_test, y_test, models, param):
                 cv=3,
                 scoring="f1",
                 n_jobs=-1,
+                refit=True,
             )
             grid_search.fit(X_train, y_train)
 
+            # GridSearchCV refits the best estimator on all training data by default.
             best_model = grid_search.best_estimator_
-            best_model.fit(X_train, y_train)
-            y_test_pred = best_model.predict(X_test)
-
-            report[model_name] = f1_score(y_test, y_test_pred, zero_division=0)
+            report[model_name] = grid_search.best_score_
             models[model_name] = best_model
 
         return report
