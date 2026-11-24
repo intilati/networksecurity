@@ -3,11 +3,10 @@ from networksecurity.exception.exception import NetworkSecurityException
 from networksecurity.logging.logger import logging
 import os,sys
 import numpy as np
-#import dill
 import pickle
 
-from sklearn.metrics import r2_score
 from sklearn.model_selection import GridSearchCV
+
 
 def read_yaml_file(file_path: str) -> dict:
     try:
@@ -15,7 +14,8 @@ def read_yaml_file(file_path: str) -> dict:
             return yaml.safe_load(yaml_file)
     except Exception as e:
         raise NetworkSecurityException(e, sys) from e
-    
+
+
 def write_yaml_file(file_path: str, content: object, replace: bool = False) -> None:
     try:
         if replace:
@@ -26,6 +26,7 @@ def write_yaml_file(file_path: str, content: object, replace: bool = False) -> N
             yaml.dump(content, file)
     except Exception as e:
         raise NetworkSecurityException(e, sys)
+
 
 def save_numpy_array_data(file_path: str, array: np.array):
     """
@@ -40,7 +41,8 @@ def save_numpy_array_data(file_path: str, array: np.array):
             np.save(file_obj, array)
     except Exception as e:
         raise NetworkSecurityException(e, sys) from e
-    
+
+
 def save_object(file_path: str, obj: object) -> None:
     try:
         logging.info("Entered the save_object method of MainUtils class")
@@ -50,21 +52,22 @@ def save_object(file_path: str, obj: object) -> None:
         logging.info("Exited the save_object method of MainUtils class")
     except Exception as e:
         raise NetworkSecurityException(e, sys) from e
-    
+
+
 def load_object(file_path: str, ) -> object:
     try:
         if not os.path.exists(file_path):
             raise Exception(f"The file: {file_path} is not exists")
         with open(file_path, "rb") as file_obj:
-            print(file_obj)
             return pickle.load(file_obj)
     except Exception as e:
         raise NetworkSecurityException(e, sys) from e
-    
+
+
 def load_numpy_array_data(file_path: str) -> np.array:
     """
     load numpy array data from file
-    file_path: str location of file to load
+    file_path: str location  file to load
     return: np.array data loaded
     """
     try:
@@ -72,36 +75,34 @@ def load_numpy_array_data(file_path: str) -> np.array:
             return np.load(file_obj)
     except Exception as e:
         raise NetworkSecurityException(e, sys) from e
-    
 
 
-def evaluate_models(X_train, y_train,X_test,y_test,models,param):
+def evaluate_models(X_train, y_train, models, param):
+    """
+    Tune candidate classifiers with cross-validation and return mean CV F1 scores.
+    The held-out test set is deliberately not used for model selection.
+    """
     try:
         report = {}
 
-        for i in range(len(list(models))):
-            model = list(models.values())[i]
-            para=param[list(models.keys())[i]]
+        for model_name, model in models.items():
+            parameters = param[model_name]
+            grid_search = GridSearchCV(
+                estimator=model,
+                param_grid=parameters,
+                cv=3,
+                scoring="f1",
+                n_jobs=-1,
+                refit=True,
+            )
+            grid_search.fit(X_train, y_train)
 
-            gs = GridSearchCV(model,para,cv=3)
-            gs.fit(X_train,y_train)
-
-            model.set_params(**gs.best_params_)
-            model.fit(X_train,y_train)
-
-            #model.fit(X_train, y_train)  # Train model
-
-            y_train_pred = model.predict(X_train)
-
-            y_test_pred = model.predict(X_test)
-
-            train_model_score = r2_score(y_train, y_train_pred)
-
-            test_model_score = r2_score(y_test, y_test_pred)
-
-            report[list(models.keys())[i]] = test_model_score
+            # GridSearchCV refits the best estimator on all training data by default.
+            best_model = grid_search.best_estimator_
+            report[model_name] = grid_search.best_score_
+            models[model_name] = best_model
 
         return report
 
     except Exception as e:
-        raise NetworkSecurityException(e, sys)
+        raise NetworkSecurityException(e, sys) from e
