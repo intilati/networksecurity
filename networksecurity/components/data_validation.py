@@ -40,7 +40,8 @@ class DataValidation:
             if len(dataframe.columns) != len(required_columns):
                 return False
 
-            return set(dataframe.columns) == set(required_columns)
+            # Preserve the schema's feature order to avoid mismatched model inputs.
+            return list(dataframe.columns) == required_columns
         except Exception as e:
             raise NetworkSecurityException(e, sys)
 
