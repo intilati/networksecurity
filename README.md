@@ -202,7 +202,7 @@ S3 synchronization requires AWS CLI credentials and access to the bucket configu
 - MongoDB must be reachable and the source dataset must be available before running ingestion.
 - The input dataset should match the feature names and target column defined in `data_schema/schema.yaml`.
 - The KS report compares training and test distributions during the batch training workflow; it does not implement live drift monitoring.
-- Classifier model selection uses F1-score rather than regression (R^2). Metrics should be reported from an actual completed run; no performance figures are claimed in this README.
+- Classifier model selection uses mean cross-validation F1-score on the training split; the held-out test split is reserved for final evaluation rather than model selection. Metrics should be reported from an actual completed run; no performance figures are claimed in this README.
 - The project serializes Python model artifacts with pickle. Only load artifacts from sources you trust.
 
 ## License
