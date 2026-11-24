@@ -77,7 +77,7 @@ def load_numpy_array_data(file_path: str) -> np.array:
         raise NetworkSecurityException(e, sys) from e
 
 
-def evaluate_models(X_train, y_train, X_test, y_test, models, param):
+def evaluate_models(X_train, y_train, models, param):
     """
     Tune candidate classifiers with cross-validation and return mean CV F1 scores.
     The held-out test set is deliberately not used for model selection.
